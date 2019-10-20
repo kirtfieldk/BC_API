@@ -11,7 +11,7 @@ const Bootcamp = mongoose.model('Bootcamp');
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
   const reqQuery = { ...req.query };
   // FIelds to exclude
-  const removeFields = ['select', 'sort'];
+  const removeFields = ['select', 'sort', 'page', 'limit'];
   removeFields.forEach(doc => delete reqQuery[doc]);
 
   let queryStr = JSON.stringify(reqQuery);
@@ -30,10 +30,36 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   } else {
     query = query.sort('-createdAt');
   }
+  // Pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 50;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = await Bootcamp.countDocuments();
+  query = query.skip(startIndex).limit(limit);
   const response = await query;
+
+  const pagination = {};
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit
+    };
+  }
+  if (startIndex > 0) {
+    pagination.pre = {
+      page: page - 1,
+      limit
+    };
+  }
   res
     .status(200)
-    .json({ msg: 'Success', count: response.length, data: response });
+    .json({
+      msg: 'Success',
+      count: response.length,
+      pagination,
+      data: response
+    });
 });
 // get one Bootcamp
 // ROUTE GET /api/v1/bootcamps/:id
