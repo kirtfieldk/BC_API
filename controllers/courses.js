@@ -61,7 +61,7 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
 });
 
 // PUT api/v1/courses/:id
-exports.addCourse = asyncHandler(async (req, res, next) => {
+exports.updateCourse = asyncHandler(async (req, res, next) => {
   let course = await Courses.findById(req.params.id);
   if (!course)
     return next(
@@ -77,5 +77,18 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
     msg: 'Success',
     count: course.length,
     data: course
+  });
+});
+// DELETE api/v1/:id
+exports.deleteCourse = asyncHandler(async (req, res, next) => {
+  let course = await Courses.findById(req.params.id);
+  if (!course)
+    return next(
+      new ErrorResponse(`No Course with id of: ${req.params.id}`),
+      404
+    );
+  await course.remove();
+  return res.status(200).json({
+    msg: 'Success'
   });
 });
