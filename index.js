@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env' });
 const routes = require('./routes/routes');
+const courseRoutes = require('./routes/courses');
 const morgan = require('morgan');
 const mongoDb = require('./config/db');
 const errorHandler = require('./middleware/error');
@@ -11,7 +12,9 @@ app.use(express.json());
 if (process.env.NODE_ENV == 'development') app.use(morgan('dev'));
 mongoDb();
 require('./models/bootcamp');
+require('./models/course');
 app.use('/api/v1/bootcamps', routes);
+app.use('/api/v1/courses', courseRoutes);
 app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 const server = app.listen(

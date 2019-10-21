@@ -16,7 +16,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 
   let queryStr = JSON.stringify(reqQuery);
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
-  let query = Bootcamp.find(JSON.parse(queryStr));
+  let query = Bootcamp.find(JSON.parse(queryStr)).populate('courses');
   // SELECT FIELDS
   if (req.query.select) {
     const fields = req.query.select.split(',').join(' ');
@@ -52,14 +52,12 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
       limit
     };
   }
-  res
-    .status(200)
-    .json({
-      msg: 'Success',
-      count: response.length,
-      pagination,
-      data: response
-    });
+  res.status(200).json({
+    msg: 'Success',
+    count: response.length,
+    pagination,
+    data: response
+  });
 });
 // get one Bootcamp
 // ROUTE GET /api/v1/bootcamps/:id
@@ -75,11 +73,12 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 // ROUTE DELETE /api/v1/bootcamps/:id
 // Access private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  await Bootcamp.findByIdAndDelete(req.params.id);
+  const removed = await Bootcamp.findById(req.params.id);
   if (!Bootcamp)
     return next(
       new ErrorResponse(`Cannot fetch from database: ${req.params.id}`, 404)
     );
+  await removed.remove();
   res.status(200).json({ msg: 'Success', data: {} });
 });
 // ROUTE PUT /api/v1/bootcamps/:id
