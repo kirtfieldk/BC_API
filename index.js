@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const dotenv = require('dotenv');
+const fileUpload = require('express-fileupload');
 dotenv.config({ path: './config/config.env' });
 const routes = require('./routes/routes');
 const courseRoutes = require('./routes/courses');
@@ -11,8 +13,12 @@ const errorHandler = require('./middleware/error');
 app.use(express.json());
 if (process.env.NODE_ENV == 'development') app.use(morgan('dev'));
 mongoDb();
+
 require('./models/bootcamp');
 require('./models/course');
+app.use(fileUpload());
+// Set Static foldure
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/bootcamps', routes);
 app.use('/api/v1/courses', courseRoutes);
 app.use(errorHandler);
