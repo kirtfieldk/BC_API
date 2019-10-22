@@ -7,6 +7,8 @@ const {
   getBootcampsRadius,
   bootcampPhotoUpload
 } = require('../controllers/bc');
+const Bootcamp = require('../models/bootcamp');
+const advResults = require('../middleware/advResults');
 const express = require('express');
 const router = express.Router();
 // Include other resorce router
@@ -18,7 +20,7 @@ router.route('/radius/:zipcode/:distance').get(getBootcampsRadius);
 router.route('/:id/photo').put(bootcampPhotoUpload);
 router
   .route('/')
-  .get(getBootcamps)
+  .get(advResults(Bootcamp, 'Courses'), getBootcamps)
   .post(createBootcamp);
 router
   .route('/:id')
