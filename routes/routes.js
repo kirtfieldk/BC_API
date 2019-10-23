@@ -9,6 +9,7 @@ const {
 } = require('../controllers/bc');
 const Bootcamp = require('../models/bootcamp');
 const advResults = require('../middleware/advResults');
+const { protect, authorize } = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 // Include other resorce router
@@ -17,15 +18,17 @@ const courseRouter = require('./courses');
 router.use('/:bootcampId/courses', courseRouter);
 //
 router.route('/radius/:zipcode/:distance').get(getBootcampsRadius);
-router.route('/:id/photo').put(bootcampPhotoUpload);
+router
+  .route('/:id/photo')
+  .put(protect, authorize('publisher', 'admin'), bootcampPhotoUpload);
 router
   .route('/')
   .get(advResults(Bootcamp, 'Courses'), getBootcamps)
-  .post(createBootcamp);
+  .post(protect, authorize('publisher', 'admin'), createBootcamp);
 router
   .route('/:id')
   .get(getBootcamp)
-  .delete(deleteBootcamp)
-  .put(updateBootcamp);
+  .delete(protect, authorize('publisher', 'admin'), deleteBootcamp)
+  .put(protect, authorize('publisher', 'admin'), updateBootcamp);
 
 module.exports = router;

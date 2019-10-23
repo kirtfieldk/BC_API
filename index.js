@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const dotenv = require('dotenv');
 const fileUpload = require('express-fileupload');
@@ -12,6 +13,7 @@ const mongoDb = require('./config/db');
 const errorHandler = require('./middleware/error');
 
 app.use(express.json());
+app.use(cookieParser());
 if (process.env.NODE_ENV == 'development') app.use(morgan('dev'));
 mongoDb();
 

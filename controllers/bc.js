@@ -37,8 +37,19 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
 // ROUTE PUT /api/v1/bootcamps/:id
 // Access private
 exports.createBootcamp = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
+  req.body.user = req.user.id;
+  // Check for publish bootcamp
+  const published = await Bootcamp.findOne({ user: req.user.id });
+  // If user is not admin they can only publish one Boot
+  if (published && req.user.role !== 'admin')
+    return next(
+      new ErrorResponse(
+        `User with id${req.user.id} already has one Bootcamp`,
+        401
+      )
+    );
   const response = await Bootcamp.create(req.body);
+
   res.status(201).json({
     msg: 'Success',
     data: response
