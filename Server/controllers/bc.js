@@ -31,6 +31,8 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(`Cannot fetch from database: ${req.params.id}`, 404)
     );
+  if (response.user.toString() !== req.user.id && req.user.role !== 'admin')
+    return next(new ErrorResponse('User not able to update', 401));
   await removed.remove();
   res.status(200).json({ msg: 'Success', data: {} });
 });
@@ -58,14 +60,17 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 // ROUTE PUT /api/v1/bootcamps/:id
 // Access private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
-  const response = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true
-  });
+  let response = await Bootcamp.findById(req.params.id);
   if (!Bootcamp)
     return next(
       new ErrorResponse(`Cannot fetch from database: ${req.params.id}`, 404)
     );
+  if (response.user.toString() !== req.user.id && req.user.role !== 'admin')
+    return next(new ErrorResponse('User not able to update', 401));
+  response = await Bootcamp.findOneAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
   res.status(200).json({ msg: 'Success', data: response });
 });
 
@@ -103,6 +108,8 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(`Cannot fetch from database: ${req.params.id}`, 404)
     );
+  if (response.user.toString() !== req.user.id && req.user.role !== 'admin')
+    return next(new ErrorResponse('User not able to update', 401));
   if (!req.files) {
     return next(new ErrorResponse('Please upload a file'), 400);
   }

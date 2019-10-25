@@ -39,13 +39,17 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
 // POST api/v1/bootcamp/:bootcampId/courses
 exports.addCourse = asyncHandler(async (req, res, next) => {
   req.body.bootcamp = req.params.bootcampId;
+  req.body.user = req.user.id;
   const camp = await Bootcamp.findById(req.params.bootcampId);
   if (!camp)
     return next(
       new ErrorResponse(`No bootcamp with id of: ${req.params.bootcampId}`),
       404
     );
-
+  if (camp.user.toString() !== req.user.id && req.user.role !== 'admin')
+    return next(
+      new ErrorResponse('User not able to add couse to this Bootcamp', 401)
+    );
   const course = await Courses.create(req.body);
   return res.status(200).json({
     msg: 'Success',
@@ -62,7 +66,8 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`No Course with id of: ${req.params.id}`),
       404
     );
-
+  if (course.user.toString() !== req.user.id && req.user.role !== 'admin')
+    return next(new ErrorResponse('User not able to update', 401));
   course = await Courses.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
@@ -81,6 +86,8 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`No Course with id of: ${req.params.id}`),
       404
     );
+  if (course.user.toString() !== req.user.id && req.user.role !== 'admin')
+    return next(new ErrorResponse('User not able to update', 401));
   await course.remove();
   return res.status(200).json({
     msg: 'Success'
