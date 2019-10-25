@@ -58,3 +58,16 @@ exports.getCurrentUser = asyncHandler(async (req, res, next) => {
     data: user
   });
 });
+
+// Forot password
+// GET api/v1/auth/forgotpassword
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) return next(new ErrorResponse('No user with that email', 404));
+  const resetToken = user.getResetToken();
+  await user.save({ validateBeforeSave: false });
+  res.status(200).json({
+    msg: 'Success',
+    data: user
+  });
+});
