@@ -52,7 +52,7 @@ userSchema.methods.getSignedJwtToken = function() {
 userSchema.methods.matchPassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
-userSchema.methods.resetPasswordToken = function() {
+userSchema.methods.resetPasswordTokenMethod = function() {
   const resetToken = crypto.randomBytes(20).toString('hex');
   this.resetPasswordToken = crypto
     .createHash('sha256')

@@ -71,3 +71,32 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     data: user
   });
 });
+
+// Current login User updates info
+// PUT api/v1/auth/user
+exports.updateUser = asyncHandler(async (req, res, next) => {
+  const fieldsToUpdate = {
+    name: req.body.name,
+    email: req.body.email
+  };
+  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true
+  });
+  res.status(200).json({
+    msg: 'Success',
+    data: user
+  });
+});
+
+// Current login User Password
+// PUT api/v1/auth/user/updatepassword
+exports.updateUserPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select('+password');
+  // Check Cuurent password
+  if (!(await user.matchPassword(req.body.currentPassword)))
+    return next(new ErrorResponse('Password is incorrect'), 401);
+  user.password = req.body.newPassword;
+  await user.save();
+  sendTokenResponse(user, 200, res);
+});
