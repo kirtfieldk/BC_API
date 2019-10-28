@@ -7,6 +7,7 @@ dotenv.config({ path: './config/config.env' });
 const Bootcamp = require('./models/bootcamp');
 const Courses = require('./models/course');
 const User = require('./models/user');
+const Reviews = require('./models/reviews');
 mongoose.connect(process.env.MONGO_KEY, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -23,6 +24,9 @@ const courses = JSON.parse(
 const user = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8')
 );
+const review = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/reviews.json`, 'utf-8')
+);
 
 // Import
 const importData = async () => {
@@ -30,6 +34,7 @@ const importData = async () => {
     await Bootcamp.create(bootcamps);
     await Courses.create(courses);
     await User.create(user);
+    await Reviews.create(review);
     process.exit(0);
   } catch (err) {
     console.log(err);
@@ -42,6 +47,7 @@ const deleteData = async () => {
     await Bootcamp.deleteMany();
     await Courses.deleteMany();
     await User.deleteMany();
+    await Reviews.deleteMany();
     process.exit(0);
   } catch (err) {
     console.log(err);
