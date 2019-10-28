@@ -59,6 +59,19 @@ exports.getCurrentUser = asyncHandler(async (req, res, next) => {
   });
 });
 
+// Logout user and clear cookie
+// GET api/v1/auth/logout
+exports.logout = asyncHandler(async (req, res, next) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+  res.status(200).json({
+    msg: 'Success',
+    data: {}
+  });
+});
+
 // Forot password
 // GET api/v1/auth/forgotpassword
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
