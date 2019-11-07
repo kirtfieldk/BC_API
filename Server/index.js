@@ -4,6 +4,11 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const dotenv = require('dotenv');
 const fileUpload = require('express-fileupload');
+const sanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+const hpp = require('hpp');
 dotenv.config({ path: './config/config.env' });
 const routes = require('./routes/routes');
 const courseRoutes = require('./routes/courses');
@@ -16,6 +21,15 @@ const errorHandler = require('./middleware/error');
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(sanitize());
+app.use(helmet());
+app.use(cors());
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 100
+});
+app.use(limiter);
+app.use(hpp());
 if (process.env.NODE_ENV == 'development') app.use(morgan('dev'));
 mongoDb();
 
