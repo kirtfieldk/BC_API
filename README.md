@@ -23,7 +23,20 @@ The request body should be simple JSON
 }
 ```
 
-For the Update request
+For the Update request both req below are valid
+
+```json
+({
+  "first_name": "Ryan",
+  "last_name": "Kirtfield",
+  "position": "Dev Intern",
+  "school": "VCU",
+  "degree": "Computer Science"
+},
+{
+  "first_name": "Ryan"
+})
+```
 
 ## The API contains:
 
