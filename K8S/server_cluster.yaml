@@ -1,0 +1,12 @@
+# The IP address assigned to a Service. In other documents, it may be called the "Cluster IP"
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: server
+  ports:
+    - port: 5000
+      targetPort: 5000
