@@ -11,7 +11,7 @@ const {
 const { protect } = require('../middleware/auth');
 const router = express.Router();
 router.post('/register', register);
-router.get('/login', login);
+router.post('/login', login);
 router.get('/user', protect, getCurrentUser);
 router.put('/user', protect, updateUser);
 router.get('/logout', logout);
