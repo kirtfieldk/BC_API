@@ -1,11 +1,26 @@
-version: '3'
+version: '3.8'
 services:
-  server:
+  nginx:
+    depends_on:
+      - client
+      - backend
+    restart: always
     build:
-      context: Server
+      context: ./nginx
       dockerfile: Dockerfile
-    ports:
-      - '5000:5000'
+    ports: 
+      - '80:80'
+  backend:
+    build:
+      context: ./Server
+      dockerfile: Dockerfile
+    environment: 
+      - NAME=keith
+    # ports:
+    #   - '5000:5000'
     volumes:
-      - /app/node_modules
       - ./Server:/app
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
