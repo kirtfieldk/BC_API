@@ -27,9 +27,21 @@ jobs:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
           aws-secret-access-key: ${{secrets.AWS_ACCESS_SECRET_KEY}}
           aws-region: us-east-1
-      - name: Build and push Client
+      - name: Build and push Server
         run: docker build -t keithkfield/blog-server -f ./Server/Dockerfile ./Server   
       - name: Push built image to dockerhub
         run: docker tag keithkfield/blog-server keithkfield/blog-server:latest 
       - name: push
         run: docker push keithkfield/blog-server
+      - name: Build and push Client
+        run: docker build -t keithkfield/blog-client -f ./client/Dockerfile ./client   
+      - name: Push built image to dockerhub
+        run: docker tag keithkfield/blog-client keithkfield/blog-client:latest 
+      - name: push
+        run: docker push keithkfield/blog-client
+      - name: Build and push Client
+        run: docker build -t keithkfield/blog-nginx -f ./nginx/Dockerfile ./nginx   
+      - name: Push built image to dockerhub
+        run: docker tag keithkfield/blog-nginx keithkfield/blog-nginx:latest 
+      - name: push
+        run: docker push keithkfield/blog-nginx
