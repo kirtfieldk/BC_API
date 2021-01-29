@@ -11,10 +11,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: set up QEMU
-        uses: docker/setup-qemu-actions@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-actions@v1
       - name: Docker Login
         # You may pin to the exact commit or the version.
         # uses: docker/login-action@f3364599c6aa293cdc2b8391b1b56d0c30e45c8a
