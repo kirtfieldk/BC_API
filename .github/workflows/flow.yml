@@ -30,6 +30,6 @@ jobs:
       - name: Build and push Client
         run: docker build -t keithkfield/blog-server -f ./Server/Dockerfile ./Server   
       - name: Push built image to dockerhub
-        run: docker -t keithkfield/blog-server keithkfield/blog-server:latest 
+        run: docker tag keithkfield/blog-server keithkfield/blog-server:latest 
       - name: push
         run: docker push keithkfield/blog-server
