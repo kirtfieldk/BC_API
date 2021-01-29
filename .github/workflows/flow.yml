@@ -35,14 +35,14 @@ jobs:
         run: docker push keithkfield/blog-server
         # End Of Server
       - name: Build and push Client
-        run: docker build -t keithkfield/blog-client -f ./client/Dockerfile ./client   
+        run: docker build -t keithkfield/blog-client ./client   
       - name: Push built image to dockerhub
         run: docker tag keithkfield/blog-client keithkfield/blog-client:latest 
       - name: push
         run: docker push keithkfield/blog-client
         # End Of Client
       - name: Build and push Client
-        run: docker build -t keithkfield/blog-nginx -f ./nginx/Dockerfile ./nginx   
+        run: docker build -t keithkfield/blog-nginx ./nginx   
       - name: Push built image to dockerhub
         run: docker tag keithkfield/blog-nginx keithkfield/blog-nginx:latest 
       - name: push
