@@ -24,7 +24,7 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-it: ${{secrets.AWS_ACCESS_KEY}}
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
           aws-secrete-access-key: ${{secrets.AWS_ACCESS_SECRET_KEY}}
           aws-region: us-east-1
       - name: Build and push Client
