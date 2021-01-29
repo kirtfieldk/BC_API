@@ -28,7 +28,7 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_ACCESS_SECRET_KEY}}
           aws-region: us-east-1
       - name: Build and push Server
-        run: docker build -t keithkfield/blog-server -f Dockerfile ./Server   
+        run: docker build -t keithkfield/blog-server -f ./Server/Dockerfile ./Server   
       - name: Push built image to dockerhub
         run: docker tag keithkfield/blog-server keithkfield/blog-server:latest 
       - name: push
