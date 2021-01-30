@@ -1,0 +1,39 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+      {
+        "name": "nginx",
+        "image": "keithkfield/blog-nginx",
+        "hostname": "nginx",
+        "essential": true,
+        "portMappings": [
+          {
+            "hostPort": 80,
+            "containerPort": 80
+          }
+        ],
+        "links": ["client", "server"],
+        "memory": 100
+      },
+      {
+        "name": "client",
+        "image": "keithkfield/blog-client",
+        "hostname": "client",
+        "essential": false,
+        "memory": 300
+      },
+      {
+        "name": "server",
+        "image": "keithkfield/blog-serve",
+        "hostname": "backend",
+        "environment": [
+            {
+                "name": "NAME",
+                "value": "keith"
+            }
+            ],
+        "essential": false,
+        "memory": 300
+      }
+    ]
+}

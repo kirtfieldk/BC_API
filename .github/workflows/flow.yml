@@ -21,12 +21,12 @@ jobs:
           password: ${{secrets.DOCKERHUB_TOKEN}}
           # Log out from the Docker registry at the end of a job
           logout: true
-      - name: Deploy to Elastic Beanstalk
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
-          aws-secret-access-key: ${{secrets.AWS_ACCESS_SECRET_KEY}}
-          aws-region: us-east-1
+      # - name: Deploy to Elastic Beanstalk
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
+      #     aws-secret-access-key: ${{secrets.AWS_ACCESS_SECRET_KEY}}
+      #     aws-region: us-east-1
       - name: Build and push Server
         run: docker build -t keithkfield/blog-server -f ./Server/Dockerfile ./Server   
       - name: Push built image to dockerhub
@@ -48,3 +48,13 @@ jobs:
       - name: push
         run: docker push keithkfield/blog-nginx
         # End of nginx
+        # Now to push and deploy to AWS Elastic Beanstalk
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
+          application_name: Medium-blog-series
+          environment_name: blogSeries-dev
+          version_label: 12345
+          region: us-east-1
