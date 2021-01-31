@@ -69,7 +69,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
           application_name: medium-compose-series
           environment_name: Mediumblogseries-dev
-          version_label: "blogseries-${{ steps.format-time.outputs.replaced }}"
+          version_label: "app-cbe0-210131_121135"
           region: us-east-1
           deployment_package: deploy.zip
           # stuff hjhdd
