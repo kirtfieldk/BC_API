@@ -1,5 +1,5 @@
 {
-    "AWSEBDockerrunVersion": 2,
+    "AWSEBDockerrunVersion": "3",
     "containerDefinitions": [
       {
         "name": "nginx",
@@ -24,7 +24,7 @@
       },
       {
         "name": "server",
-        "image": "keithkfield/blog-serve",
+        "image": "keithkfield/blog-server",
         "hostname": "backend",
         "environment": [
             {
@@ -33,7 +33,7 @@
             }
             ],
         "essential": false,
-        "memory": 300
+        "memory": 500
       }
     ]
 }
