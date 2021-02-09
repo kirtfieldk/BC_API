@@ -42,5 +42,5 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
           application_name: blog_series_devops
           environment_name: development
-          version_label: "app-d56a-210209_150932"
+          version_label: "app-d56a-210209_150932-3"
           region: us-east-1
