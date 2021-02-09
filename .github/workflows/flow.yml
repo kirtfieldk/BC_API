@@ -40,7 +40,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
-          application_name: medium-compose-series
-          environment_name: Mediumblogseries-dev
-          version_label: "app-cbe0-210131_121135"
+          application_name: blog_series_devops
+          environment_name: development
+          version_label: "app-d56a-210209_150932"
           region: us-east-1
