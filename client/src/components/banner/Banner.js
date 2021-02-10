@@ -41,7 +41,7 @@ const Banner = ({currentUser, user, getUser}) => {
                 <Toolbar>
                         <Typography variant='h4' className={classes.title}>
                             <NavLink className={classes.homeLink} to ='/'>
-                                Camps of True Power V2
+                                Camps of True Power
                             </NavLink>
                         </Typography>
                     <Button className = {classes.btn} color="inherit">
